@@ -15,17 +15,18 @@ To use this module for the ACME DNS challenge, [configure the ACME issuer in you
 
 ```json
 {
-	"module": "acme",
-	"challenges": {
-		"dns": {
-			"provider": {
-				"name": "directadmin",
-				"host": "DIRECT_ADMIN_HOST",
-				"user": "DIRECT_ADMIN_USER",
-				"login_key": "DIRECT_ADMIN_LOGIN_KEY"
-			}
-		}
-	}
+    "module": "acme",
+    "challenges": {
+        "dns": {
+            "provider": {
+                "name": "directadmin",
+                "host": "https://da.domain.com:2222",
+                "user": "admin",
+                "login_key": "MySecretKey",
+                "insecure_requests": "true/false"
+            }
+        }
+    }
 }
 ```
 
@@ -34,13 +35,25 @@ or with the Caddyfile:
 ```
 # globally
 {
-	acme_dns directadmin ...
+    acme_dns directadmin {
+        host "https://da.domain.com:2222"
+        user "admin"
+        login_key "MySecretKey"
+        insecure_requests "false"
+    }
 }
 ```
 
 ```
 # one site
-tls {
-	dns directadmin ...
+secure.domain.com {
+    tls {
+        dns directadmin {
+            host "https://da.domain.com:2222"
+            user "admin"
+            login_key "MySecretKey"
+            insecure_requests "false"
+        }
+    }
 }
 ```
