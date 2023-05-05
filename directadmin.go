@@ -4,6 +4,7 @@ import (
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
 	"github.com/libdns/directadmin"
+	"strconv"
 )
 
 // Provider lets Caddy read and manipulate DNS records hosted by this DNS provider.
@@ -36,6 +37,7 @@ func (p *Provider) Provision(_ caddy.Context) error {
 //	    host <host_url>
 //	    user <user>
 //	    login_key <login_key>
+//		insecure_requests <true/false>
 //	}
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
@@ -70,6 +72,17 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				}
 				if d.NextArg() {
 					p.Provider.LoginKey = d.Val()
+				}
+				if d.NextArg() {
+					return d.ArgErr()
+				}
+			case "insecure_requests":
+				if d.NextArg() {
+					val, err := strconv.ParseBool(d.Val())
+					if err != nil {
+						return d.Err("login key already set")
+					}
+					p.Provider.InsecureRequests = val
 				}
 				if d.NextArg() {
 					return d.ArgErr()

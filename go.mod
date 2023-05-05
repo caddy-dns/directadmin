@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/caddyserver/caddy/v2 v2.6.4
-	github.com/libdns/directadmin v0.2.0
+	github.com/libdns/directadmin v0.3.0
 )
 
 require (
